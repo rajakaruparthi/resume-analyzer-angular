@@ -1,0 +1,114 @@
+# See https://help.github.com/articles/ignoring-files/ for more about ignoring files.
+
+# Compiled output
+/dist
+/tmp
+/out-tsc
+/bazel-out
+
+# Node modules
+/node_modules
+
+# npm / yarn / pnpm
+npm-debug.log
+yarn-error.log
+yarn-debug.log
+pnpm-debug.log
+package-lock.json
+yarn.lock
+pnpm-lock.yaml
+
+# Environment files
+.env
+.env.local
+.env.production
+
+# Angular CLI cache
+.angular/cache
+.angular/cli
+
+# IDE / Editor files
+.idea/
+.vscode/
+*.swp
+*.swo
+*~
+.project
+.classpath
+.settings/
+
+# OS generated files
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
+desktop.ini
+
+# Testing
+/coverage
+/coverage-cypress
+/cypress/screenshots
+/cypress/videos
+/test-results
+.nyc_output
+
+# Logs
+logs/
+*.log
+
+# Build artifacts
+/tmp
+/temp
+
+# Angular universal (server-side rendering)
+/dist-server
+/main.js
+/main.js.map
+
+# Firebase
+.firebase
+.firebase.json
+.firebaserc
+
+# Angular service worker
+/service-worker.js
+/service-worker.js.map
+/*.sw?manifest.json
+
+# Webpack stats
+webpack-stats.json
+stats.json
+
+# System files
+.DS_Store
+Thumbs.db
+
+# ESLint / Prettier coverage
+.eslintcache
+.prettiercache
+
+# Storybook
+storybook-static
+*/storybook-static
+
+# Cypress
+cypress/downloads
+cypress/screenshots
+cypress/videos
+cypress/fixtures/**/*.json
+
+# Puppeteer
+.chromium
+
+# Chrome DevTools
+.chrome-devtools-launcher
+
+# i18n / localization
+/messages.xlf
+/messages.json
+
+# Dependency tooling
+.turbo

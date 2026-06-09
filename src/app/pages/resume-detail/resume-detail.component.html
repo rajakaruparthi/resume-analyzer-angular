@@ -1,0 +1,92 @@
+<div class="container">
+  <div style="margin-bottom: 20px;">
+    <a class="btn outline" routerLink="/home" style="padding: 8px 16px; font-size: 0.85rem;">
+      <svg xmlns="http://www.w3.org/2000/svg" height="18px" viewBox="0 -960 960 960" width="18px" fill="currentColor" style="vertical-align: middle; margin-right: 4px;">
+        <path d="m313-440 224 224-57 57-320-320 320-320 57 57-224 224h527v80H313Z"/>
+      </svg>
+      Back to Workspace Home
+    </a>
+  </div>
+  
+  @if (loading) {
+    <div class="card">
+      <p>Loading score...</p>
+    </div>
+  } @else if (resume) {
+    <div class="card" style="margin-bottom: 24px;">
+      <div class="row" style="justify-content:space-between">
+        <div>
+          <h1>{{ resume.originalFilename }}</h1>
+          <p class="muted">Uploaded {{ resume.uploadedAt | date:'medium' }} · <span class="badge success">{{ resume.status }}</span></p>
+        </div>
+        <div style="text-align: center;">
+          <div class="score-circle excellent" style="width: 100px; height: 100px; border-width: 6px;">
+            <div class="score-number" style="font-size: 28px;">{{ resume.overallScore ?? '-' }}%</div>
+            <div class="score-label" style="font-size: 9px;">Overall Score</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="grid-2" style="margin-bottom: 24px;">
+      <div class="card">
+        <h2 style="color: var(--success); display: flex; align-items: center; gap: 8px; margin-bottom: 16px;">
+          <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="currentColor"><path d="M382-240 154-468l57-57 171 171 367-367 57 57-424 424Z"/></svg>
+          Strengths
+        </h2>
+        <ul style="margin-left: 20px; display: flex; flex-direction: column; gap: 8px;">
+          @for (item of resume.strengths; track item) {
+            <li>{{ item }}</li>
+          }
+        </ul>
+      </div>
+      
+      <div class="card">
+        <h2 style="color: #ea580c; display: flex; align-items: center; gap: 8px; margin-bottom: 16px;">
+          <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="currentColor"><path d="M480-280q17 0 28.5-11.5T520-320q0-17-11.5-28.5T480-360q-17 0-28.5 11.5T440-320q0 17 11.5 28.5T480-280Zm-40-160h80v-240h-80v240Zm40 360q-83 0-156-31.5T197-197q-54-54-85.5-127T80-480q0-83 31.5-156T197-763q54-54 127-85.5T480-880q83 0 156 31.5T763-763q54 54 85.5 127T880-480q0 83-31.5 156T763-197q-54 54-127 85.5T480-80Zm0-80q134 0 227-93t93-227q0-134-93-227t-227-93q-134 0-227 93t-93 227q0 134 93 227t227 93Zm0-320Z"/></svg>
+          Improvements Needed
+        </h2>
+        <ul style="margin-left: 20px; display: flex; flex-direction: column; gap: 8px;">
+          @for (item of resume.improvements; track item) {
+            <li>{{ item }}</li>
+          }
+        </ul>
+      </div>
+    </div>
+
+    <div class="card" style="margin-bottom: 24px;">
+      <h2 style="margin-bottom: 16px;">Score Breakdown</h2>
+      <div class="table-wrapper">
+        <table class="table">
+          <thead>
+            <tr>
+              <th>Category</th>
+              <th>Score</th>
+              <th>Comments</th>
+            </tr>
+          </thead>
+          <tbody>
+            @for (row of resume.scoreBreakdown; track row.category) {
+              <tr>
+                <td style="font-weight: 600; color: var(--secondary);">{{ row.category }}</td>
+                <td>
+                  <span class="badge info" style="font-weight: 700;">{{ row.score }}/100</span>
+                </td>
+                <td>{{ row.comments }}</td>
+              </tr>
+            }
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <div class="card">
+      <h2 style="margin-bottom: 12px;">Detailed Feedback</h2>
+      <p style="white-space: pre-line; line-height: 1.6; color: var(--text-main);">{{ resume.detailedFeedback }}</p>
+    </div>
+  } @else {
+    <div class="card">
+      <p class="error">Resume not found.</p>
+    </div>
+  }
+</div>

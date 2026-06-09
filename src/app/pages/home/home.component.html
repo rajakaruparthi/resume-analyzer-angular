@@ -1,0 +1,162 @@
+<div class="container" style="margin-top: 40px;">
+  <!-- Greeting Banner -->
+  <div class="card" style="background: linear-gradient(135deg, var(--secondary) 0%, #1e293b 100%); color: #fff; margin-bottom: 30px; border: none; padding: 36px; position: relative; overflow: hidden;">
+    <div style="position: relative; z-index: 2; max-width: 650px;">
+      <span style="background: rgba(99, 102, 241, 0.2); color: #a5b4fc; padding: 6px 12px; border-radius: 99px; font-size: 0.85rem; font-weight: 700; text-transform: uppercase;">Workspace Dashboard</span>
+      <h1 style="color: #fff; font-size: 2.25rem; margin-top: 12px; margin-bottom: 8px;">Welcome back, {{ userName() }}!</h1>
+      <p style="color: #cbd5e1; font-size: 1.05rem;">
+        Ready to polish your resume? Upload a new version or check your history below to see how your scores have improved.
+      </p>
+    </div>
+    <!-- Abstract gradient circles in background -->
+    <div style="position: absolute; right: -50px; top: -50px; width: 250px; height: 250px; border-radius: 50%; background: radial-gradient(circle, rgba(99, 102, 241, 0.15) 0%, transparent 70%);"></div>
+    <div style="position: absolute; right: 100px; bottom: -80px; width: 200px; height: 200px; border-radius: 50%; background: radial-gradient(circle, rgba(6, 182, 212, 0.12) 0%, transparent 70%);"></div>
+  </div>
+
+  <!-- Main Layout Grid -->
+  <div class="grid-2">
+    <!-- Left Column: Stats & Action Cards -->
+    <div>
+      <!-- Analytics Stats Grid -->
+      <div class="grid-2" style="margin-bottom: 24px;">
+        <!-- Card: Total Uploads -->
+        <div class="card" style="padding: 20px;">
+          <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 12px;">
+            <span style="color: var(--text-muted); font-weight: 600; font-size: 0.85rem; text-transform: uppercase;">Resumes Graded</span>
+            <span style="background: var(--primary-light); color: var(--primary); width: 32px; height: 32px; border-radius: 8px; display: flex; align-items: center; justify-content: center;">
+              <svg xmlns="http://www.w3.org/2000/svg" height="18px" viewBox="0 -960 960 960" width="18px" fill="currentColor"><path d="M240-80q-33 0-56.5-23.5T160-160v-640q0-33 23.5-56.5T240-880h320l240 240v480q0 33-23.5 56.5T720-80H240Zm280-520v-200H240v640h480v-440H520ZM240-800v200-200 640-640Z"/></svg>
+            </span>
+          </div>
+          <div style="font-size: 1.85rem; font-weight: 800; color: var(--secondary);">{{ totalResumes }}</div>
+          <p style="font-size: 0.8rem; margin-top: 4px;">Total files processed</p>
+        </div>
+
+        <!-- Card: Average Score -->
+        <div class="card" style="padding: 20px;">
+          <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 12px;">
+            <span style="color: var(--text-muted); font-weight: 600; font-size: 0.85rem; text-transform: uppercase;">Average Score</span>
+            <span style="background: #ecfdf5; color: #10b981; width: 32px; height: 32px; border-radius: 8px; display: flex; align-items: center; justify-content: center;">
+              <svg xmlns="http://www.w3.org/2000/svg" height="18px" viewBox="0 -960 960 960" width="18px" fill="currentColor"><path d="M480-120q-75 0-140.5-28.5t-114-77q-48.5-48.5-77-114T120-480q0-75 28.5-140.5t77-114q48.5-48.5 114-77T480-840q75 0 140.5 28.5t114 77q48.5 48.5 77 114T840-480q0 75-28.5 140.5t-77 114q-48.5 48.5-114 77T480-120Zm0-80q116 0 198-82t82-198q0-116-82-198t-198-82q-116 0-198 82t-82 198q0 116 82 198t198 82Zm0-280Z"/></svg>
+            </span>
+          </div>
+          <div style="font-size: 1.85rem; font-weight: 800; color: var(--secondary);">
+            {{ averageScore > 0 ? averageScore + '%' : 'N/A' }}
+          </div>
+          <p style="font-size: 0.8rem; margin-top: 4px;">Overall workspace quality</p>
+        </div>
+
+        <!-- Card: Best Score -->
+        <div class="card" style="padding: 20px;">
+          <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 12px;">
+            <span style="color: var(--text-muted); font-weight: 600; font-size: 0.85rem; text-transform: uppercase;">Highest Score</span>
+            <span style="background: #eff6ff; color: #2563eb; width: 32px; height: 32px; border-radius: 8px; display: flex; align-items: center; justify-content: center;">
+              <svg xmlns="http://www.w3.org/2000/svg" height="18px" viewBox="0 -960 960 960" width="18px" fill="currentColor"><path d="M280-120v-80h400v80H280Zm200-160q-91 0-155.5-63T260-496q0-82 50.5-148T440-726v-114h80v114q79 17 129.5 83T700-496q0 89-64.5 152T480-280Zm0-80q58 0 99-41t41-99q0-58-41-99t-99-41q-58 0-99 41t-41 99q0 58 41 99t99 41Zm0-140Z"/></svg>
+            </span>
+          </div>
+          <div style="font-size: 1.85rem; font-weight: 800; color: var(--secondary);">
+            {{ highestScore > 0 ? highestScore + '%' : 'N/A' }}
+          </div>
+          <p style="font-size: 0.8rem; margin-top: 4px;">Your top ATS result</p>
+        </div>
+
+        <!-- Card: Quick Upload Link -->
+        <div class="card" style="padding: 20px; background: linear-gradient(135deg, var(--primary-light) 0%, #e0e7ff 100%); border: 1px solid rgba(99, 102, 241, 0.15); display: flex; flex-direction: column; justify-content: space-between;">
+          <div style="font-weight: 700; color: var(--primary-hover); font-size: 0.95rem; margin-bottom: 8px;">Workspace Actions</div>
+          <a class="btn" routerLink="/upload" style="padding: 8px 12px; font-size: 0.85rem; width: 100%;">
+            Upload Workspace
+            <svg xmlns="http://www.w3.org/2000/svg" height="16px" viewBox="0 -960 960 960" width="16px" fill="currentColor"><path d="M440-160v-326L336-382l-56-58 200-200 200 200-56 58-104-104v326h-80ZM160-600v-120q0-33 23.5-56.5T240-800h480q0-33 23.5-56.5T720-800v120h-80v-120H240v120h-80Z"/></svg>
+          </a>
+        </div>
+      </div>
+
+      <!-- ATS Score Interpretation Chart -->
+      <div class="card" style="margin-bottom: 24px;">
+        <h3 style="font-size: 1.15rem; margin-bottom: 12px;">ATS Grading Breakdown</h3>
+        <p style="font-size: 0.85rem; margin-bottom: 16px;">What your resume scores mean to recruiters:</p>
+        
+        <div style="display: flex; flex-direction: column; gap: 10px;">
+          <div style="display: flex; align-items: center; gap: 12px; font-size: 0.85rem;">
+            <span class="badge success" style="width: 70px; justify-content: center;">80% - 100%</span>
+            <span style="font-weight: 600; color: var(--secondary);">Excellent:</span>
+            <span>Highly optimized. Ready to apply.</span>
+          </div>
+          <div style="display: flex; align-items: center; gap: 12px; font-size: 0.85rem;">
+            <span class="badge info" style="width: 70px; justify-content: center;">70% - 79%</span>
+            <span style="font-weight: 600; color: var(--secondary);">Good:</span>
+            <span>Solid, but missing some key terminology.</span>
+          </div>
+          <div style="display: flex; align-items: center; gap: 12px; font-size: 0.85rem;">
+            <span class="badge pending" style="width: 70px; justify-content: center;">60% - 69%</span>
+            <span style="font-weight: 600; color: var(--secondary);">Average:</span>
+            <span>Needs active editing. Weak action words.</span>
+          </div>
+          <div style="display: flex; align-items: center; gap: 12px; font-size: 0.85rem;">
+            <span class="badge error" style="width: 70px; justify-content: center;">&lt; 60%</span>
+            <span style="font-weight: 600; color: var(--secondary);">Poor:</span>
+            <span>Formatting issues or insufficient descriptions.</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Right Column: Recent Resumes & Tips -->
+    <div>
+      <!-- Tip of the Day Box -->
+      <div class="card" style="background: linear-gradient(135deg, #fffbeb 0%, #fff7ed 100%); border-color: #fed7aa; margin-bottom: 24px; position: relative;">
+        <div style="display: flex; gap: 12px; align-items: flex-start;">
+          <span style="background: #ffedd5; color: #ea580c; width: 36px; height: 36px; border-radius: 50%; display: flex; align-items: center; justify-content: center; flex-shrink: 0;">
+            <svg xmlns="http://www.w3.org/2000/svg" height="20px" viewBox="0 -960 960 960" width="20px" fill="currentColor"><path d="M480-120q-33 0-56.5-23.5T400-200h160q0 33-23.5 56.5T480-120Zm-120-120v-80h240v80H360Zm90-108q-63-44-96.5-110T320-502q0-117 81.5-198.5T600-782v80q-83 0-141.5 58.5T400-502q0 49 20.5 91.5T478-344l-28 62q-10 22-10 44t10 44v32l-30-66Zm30-192h160v-80H510v80Zm0 160h160v-80H510v80Z"/></svg>
+          </span>
+          <div>
+            <h4 style="color: #c2410c; font-size: 1rem; margin-bottom: 4px;">Resume Tip of the Day</h4>
+            <p style="color: #7c2d12; font-size: 0.85rem; line-height: 1.4;">
+              "Use the <strong>STAR method</strong> (Situation, Task, Action, Result) when describing achievements. 
+              Always quantify your outcomes. Say 'increased sales by 20% in 3 months' instead of just 'responsible for sales'."
+            </p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Quick Upload Dropzone -->
+      <div class="card" routerLink="/upload" style="text-align: center; border: 2px dashed var(--border); background: rgba(255,255,255,0.45); cursor: pointer; padding: 32px 20px; transition: border-color 0.2s ease, background-color 0.2s ease; margin-bottom: 24px;">
+        <div class="drop-icon" style="width: 52px; height: 52px; margin-bottom: 12px;">
+          <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="currentColor"><path d="M440-200v-326L336-422l-56-58 200-200 200 200-56 58-104-104v326h-80ZM160-640v-120q0-33 23.5-56.5T240-840h480q33 0 56.5 23.5T800-760v120h-80v-120H240v120h-80Z"/></svg>
+        </div>
+        <h4 style="font-size: 1rem; margin-bottom: 4px; color: var(--secondary);">Quick Upload Workspace</h4>
+        <p style="font-size: 0.8rem;">Click here to upload and score your resume instantly</p>
+      </div>
+
+      <!-- Recent Uploads List -->
+      <div class="card">
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px;">
+          <h3 style="font-size: 1.15rem;">Recent Uploads</h3>
+          <a routerLink="/dashboard" style="font-size: 0.85rem; color: var(--primary); text-decoration: none; font-weight: 600;">View History</a>
+        </div>
+        
+        @if (loading) {
+          <p style="font-size: 0.9rem; color: var(--text-muted);">Loading resumes...</p>
+        } @else if (recentResumes.length === 0) {
+          <p style="font-size: 0.9rem; color: var(--text-muted);">No resumes uploaded yet. Click above to start!</p>
+        } @else {
+          <div style="display: flex; flex-direction: column; gap: 12px;">
+            @for (res of recentResumes; track res.id) {
+              <div style="display: flex; align-items: center; justify-content: space-between; padding: 12px; border: 1px solid var(--border); border-radius: 8px; background: #fff; transition: background 0.2s ease;"
+                   class="hover-row">
+                <div style="overflow: hidden; text-overflow: ellipsis; white-space: nowrap; max-width: 60%;">
+                  <div style="font-weight: 600; font-size: 0.85rem; color: var(--secondary); overflow: hidden; text-overflow: ellipsis; white-space: nowrap;">{{ res.originalFilename }}</div>
+                  <span style="font-size: 0.75rem; color: var(--text-muted);">{{ res.uploadedAt | date:'mediumDate' }}</span>
+                </div>
+                <div style="display: flex; align-items: center; gap: 10px;">
+                  @if (res.overallScore !== undefined) {
+                    <span style="font-weight: 700; font-size: 0.9rem; color: var(--secondary);">{{ res.overallScore }}%</span>
+                  }
+                  <a class="btn secondary" [routerLink]="['/resumes', res.id]" style="padding: 6px 12px; font-size: 0.75rem; border-radius: 6px; box-shadow: none;">Report</a>
+                </div>
+              </div>
+            }
+          </div>
+        }
+      </div>
+    </div>
+  </div>
+</div>

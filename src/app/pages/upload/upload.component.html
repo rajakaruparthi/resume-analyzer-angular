@@ -1,0 +1,41 @@
+<div class="container">
+  <div class="card">
+    <h1>Upload Resumes</h1>
+    <p class="muted">Upload one resume or a batch. Supported formats should be enforced by backend too: PDF, DOC, DOCX.</p>
+    
+    <div class="drop">
+      <input type="file" multiple accept=".pdf,.doc,.docx" (change)="onFilesSelected($event)">
+      <p class="muted">Choose multiple files for batch upload.</p>
+    </div>
+    
+    @if (files.length > 0) {
+      <h3 style="margin-top: 20px; margin-bottom: 10px;">Selected Files</h3>
+      <ul style="margin-left: 20px; margin-bottom: 20px; font-size: 0.9rem;">
+        @for (file of files; track file.name) {
+          <li>{{ file.name }} - {{ file.size / 1024 | number:'1.0-0' }} KB</li>
+        }
+      </ul>
+      
+      <div class="row">
+        <button class="btn" (click)="upload()" [disabled]="uploading">
+          {{ uploading ? 'Uploading...' : 'Upload and Analyze' }}
+        </button>
+        <button class="btn secondary" (click)="clear()" [disabled]="uploading">Clear</button>
+      </div>
+    }
+    
+    @if (uploading) {
+      <p style="margin-top: 16px; font-weight: 600; color: var(--primary);">Progress: {{ progress }}%</p>
+    }
+    @if (message) {
+      <p class="success" style="margin-top: 16px;">{{ message }}</p>
+    }
+    @if (error) {
+      <p class="error" style="margin-top: 16px;">{{ error }}</p>
+    }
+  </div>
+  
+  <div style="margin-top: 16px;">
+    <a class="btn outline" routerLink="/home">Back to Workspace Home</a>
+  </div>
+</div>

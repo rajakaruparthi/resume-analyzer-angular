@@ -1,0 +1,57 @@
+<div class="auth-container">
+  <div class="auth-card">
+    <h1 style="text-align: center; margin-bottom: 24px;">Create Account</h1>
+    
+    <form class="form" [formGroup]="form" (ngSubmit)="submit()">
+      <div class="field">
+        <label>Full Name</label>
+        <input formControlName="name" placeholder="John Doe">
+      </div>
+      
+      <div class="field">
+        <label>Email Address</label>
+        <input type="email" formControlName="email" placeholder="name@company.com">
+      </div>
+      
+      <div class="field">
+        <label>Password</label>
+        <input type="password" formControlName="password" placeholder="Min. 8 characters">
+      </div>
+      
+      @if (error) {
+        <p class="error">{{ error }}</p>
+      }
+      
+      <button class="btn" [disabled]="form.invalid || loading" style="margin-top: 6px;">
+        {{ loading ? 'Creating...' : 'Register' }}
+      </button>
+    </form>
+
+    <div class="divider">or continue with</div>
+
+    <div class="sso-grid">
+      <button type="button" class="btn outline" style="padding: 10px; font-size: 0.9rem; gap: 8px;">
+        <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24">
+          <path fill="#EA4335" d="M12 5.04c1.66 0 3.2.57 4.38 1.69l3.27-3.27C17.67 1.63 14.98 1 12 1 7.35 1 3.4 3.65 1.5 7.5l3.86 3q1.61-4.71 6.64-5.46Z"/>
+          <path fill="#4285F4" d="M23.49 12.27c0-.81-.07-1.59-.2-2.27H12v4.51h6.43a5.52 5.52 0 0 1-2.4 3.62l3.72 2.89c2.18-2 3.74-4.97 3.74-8.75Z"/>
+          <path fill="#FBBC05" d="M5.36 10.5a7.16 7.16 0 0 1 0-3l-3.86-3a11.93 11.93 0 0 0 0 9l3.86-3Z"/>
+          <path fill="#34A853" d="M12 18.96c-1.66 0-3.2-.57-4.38-1.69l-3.27 3.27C6.33 22.37 9.02 23 12 23c4.65 0 8.6-2.65 10.5-6.5l-3.86-3q-1.61 4.71-6.64 5.46Z"/>
+        </svg>
+        Google
+      </button>
+      <button type="button" class="btn outline" style="padding: 10px; font-size: 0.9rem; gap: 8px;">
+        <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 23 23">
+          <path fill="#F25022" d="M1 1h10v10H1z"/>
+          <path fill="#7FBA00" d="M12 1h10v10H12z"/>
+          <path fill="#00A4EF" d="M1 12h10v10H1z"/>
+          <path fill="#FFB900" d="M12 12h10v10H12z"/>
+        </svg>
+        Outlook
+      </button>
+    </div>
+
+    <p class="muted" style="margin-top: 24px; text-align: center; font-size: 0.9rem;">
+      Already registered? <a routerLink="/login">Login</a>
+    </p>
+  </div>
+</div>
