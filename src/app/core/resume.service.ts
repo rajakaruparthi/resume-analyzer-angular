@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
-import { HttpClient, HttpEvent } from '@angular/common/http';
-import { Observable } from 'rxjs';
+import { HttpClient } from '@angular/common/http';
+import { Observable, forkJoin } from 'rxjs';
+import { map } from 'rxjs/operators';
 import { API_BASE_URL } from './api.config';
 import { ResumeDetail, ResumeSummary, UploadResponse } from '../models/resume.models';
 
@@ -8,13 +9,25 @@ import { ResumeDetail, ResumeSummary, UploadResponse } from '../models/resume.mo
 export class ResumeService {
   constructor(private http: HttpClient) { }
 
-  uploadResumes(files: File[]): Observable<HttpEvent<UploadResponse>> {
-    const formData = new FormData();
-    files.forEach(file => formData.append('files', file));
-    return this.http.post<UploadResponse>(`${API_BASE_URL}/resumes/upload`, formData, {
-      reportProgress: true,
-      observe: 'events'
+  uploadResumes(files: File[]): Observable<UploadResponse> {
+    const uploads = files.map(file => {
+      const formData = new FormData();
+      formData.append('file', file);
+      return this.http.post<any>(`${API_BASE_URL}/resumes/upload`, formData);
     });
+
+    return forkJoin(uploads).pipe(
+      map(results => ({
+        uploaded: results.map(res => ({
+          id: res.s3Key,
+          key: res.key,
+          originalFilename: res.fileName,
+          s3Key: res.s3Key,
+          status: 'COMPLETED',
+          uploadedAt: new Date().toISOString()
+        }))
+      }))
+    );
   }
 
   getHistory(): Observable<ResumeSummary[]> {
@@ -25,3 +38,5 @@ export class ResumeService {
     return this.http.get<ResumeDetail>(`${API_BASE_URL}/resumes/${id}`);
   }
 }
+
+

@@ -1,6 +1,5 @@
 import { Component } from '@angular/core';
 import { DecimalPipe } from '@angular/common';
-import { HttpEventType } from '@angular/common/http';
 import { Router, RouterLink } from '@angular/router';
 import { ResumeService } from '../../core/resume.service';
 
@@ -33,15 +32,11 @@ export class UploadComponent {
     this.error = '';
 
     this.resumeService.uploadResumes(this.files).subscribe({
-      next: event => {
-        if (event.type === HttpEventType.UploadProgress && event.total) {
-          this.progress = Math.round((event.loaded / event.total) * 100);
-        }
-        if (event.type === HttpEventType.Response) {
-          this.uploading = false;
-          this.message = `${event.body?.uploaded.length ?? 0} resume(s) uploaded. Scoring started.`;
-          setTimeout(() => this.router.navigate(['/home']), 800);
-        }
+      next: response => {
+        this.uploading = false;
+        this.progress = 100;
+        this.message = `${response.uploaded.length} resume(s) uploaded successfully.`;
+        setTimeout(() => this.router.navigate(['/home']), 800);
       },
       error: () => { this.uploading = false; this.error = 'Upload failed. Please try again.'; }
     });
