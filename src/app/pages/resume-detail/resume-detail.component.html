@@ -1,11 +1,11 @@
 <div class="container">
   <div style="margin-bottom: 20px;">
-    <a class="btn outline" routerLink="/home" style="padding: 8px 16px; font-size: 0.85rem;">
+    <a class="btn outline" routerLink="/dashboard" style="padding: 8px 16px; font-size: 0.85rem;">
       <svg xmlns="http://www.w3.org/2000/svg" height="18px" viewBox="0 -960 960 960" width="18px" fill="currentColor"
         style="vertical-align: middle; margin-right: 4px;">
         <path d="m313-440 224 224-57 57-320-320 320-320 57 57-224 224h527v80H313Z" />
       </svg>
-      Back to Workspace Home
+      Back to History
     </a>
   </div>
 
@@ -14,6 +14,36 @@
     <p>Loading score...</p>
   </div>
   } @else if (resume) {
+  @if (resume.status === 'PROCESSING' || resume.status === 'UPLOADED' || (!resume.overallScore &&
+  (!resume.scoreBreakdown || resume.scoreBreakdown.length === 0))) {
+  <div class="card" style="margin-bottom: 24px;">
+    <div class="row" style="justify-content:space-between; align-items: center;">
+      <div>
+        <h1>{{ resume.originalFilename }}</h1>
+        <p class="muted">Uploaded {{ resume.uploadedAt | date:'medium' }} · <span class="badge info">{{ resume.status
+            }}</span></p>
+      </div>
+    </div>
+  </div>
+
+  <div class="card"
+    style="text-align: center; padding: 60px 40px; display: flex; flex-direction: column; align-items: center; gap: 24px;">
+    <div class="pulse-container">
+      <div class="pulse-circle">
+        <svg xmlns="http://www.w3.org/2000/svg" height="48px" viewBox="0 -960 960 960" width="48px"
+          fill="var(--primary)">
+          <path
+            d="M260-200h80v-320h-80v320Zm180 0h80v-560h-80v560Zm180 0h80v-160h-80v160Zm-360 80q-33 0-56.5-23.5T240-200v-320q0-33 23.5-56.5T320-600h80v-160q0-33 23.5-56.5T480-840h80v160h80q33 0 56.5 23.5T720-600v160h80v240q0 33-23.5 56.5T720-120H260Z" />
+        </svg>
+      </div>
+    </div>
+    <div>
+      <h2 style="font-size: 1.5rem; color: var(--secondary); margin-bottom: 8px;">Analysis in progress...</h2>
+      <p class="muted" style="max-width: 480px; margin: 0 auto;">We are currently scanning your resume, calculating
+        cryptographic section hashes, and conducting an AI review. Please check back shortly.</p>
+    </div>
+  </div>
+  } @else {
   <!-- Tab selectors -->
   <div class="tab-container">
     <button class="tab-btn" [class.active]="activeTab === 'feedback'" (click)="activeTab = 'feedback'">
@@ -31,6 +61,13 @@
           d="M200-200h57l391-391-57-57-391 391v57Zm-80 80v-170l528-527q12-11 26.5-17t30.5-6q16 0 31 6t26 18l55 56q12 11 17.5 26t5.5 30q0 16-5.5 30.5T817-647L290-120H120Zm640-584-56-56 56 56Zm-141 85-28-29 57 57-29-28Z" />
       </svg>
       Format & Themes
+    </button>
+    <button class="tab-btn" [class.active]="activeTab === 'sections'" (click)="activeTab = 'sections'">
+      <svg xmlns="http://www.w3.org/2000/svg" height="18px" viewBox="0 -960 960 960" width="18px" fill="currentColor"
+        style="vertical-align: middle;">
+        <path d="M120-240v-80h720v80H120Zm0-200v-80h720v80H120Zm0-200v-80h720v80H120Z" />
+      </svg>
+      Section Hashes & Scores
     </button>
   </div>
 
@@ -91,17 +128,39 @@
           <tr>
             <th>Category</th>
             <th>Score</th>
-            <th>Comments</th>
+            <th>Strengths</th>
+            <th>Improvements Needed</th>
           </tr>
         </thead>
         <tbody>
           @for (row of resume.scoreBreakdown; track row.category) {
           <tr>
-            <td style="font-weight: 600; color: var(--secondary);">{{ row.category }}</td>
-            <td>
+            <td style="font-weight: 600; color: var(--secondary); vertical-align: top;">{{ row.category }}</td>
+            <td style="vertical-align: top;">
               <span class="badge info" style="font-weight: 700;">{{ row.score }}/100</span>
             </td>
-            <td>{{ row.comments }}</td>
+            <td style="vertical-align: top;">
+              @if (row.strengths && row.strengths.length > 0) {
+              <ul style="margin: 0; padding-left: 16px; color: var(--success); font-size: 0.85rem; display: flex; flex-direction: column; gap: 4px;">
+                @for (str of row.strengths; track str) {
+                <li>{{ str }}</li>
+                }
+              </ul>
+              } @else {
+              <span class="muted" style="font-size: 0.85rem;">-</span>
+              }
+            </td>
+            <td style="vertical-align: top;">
+              @if (row.improvements && row.improvements.length > 0) {
+              <ul style="margin: 0; padding-left: 16px; color: #ea580c; font-size: 0.85rem; display: flex; flex-direction: column; gap: 4px;">
+                @for (imp of row.improvements; track imp) {
+                <li>{{ imp }}</li>
+                }
+              </ul>
+              } @else {
+              <span class="muted" style="font-size: 0.85rem;">-</span>
+              }
+            </td>
           </tr>
           }
         </tbody>
@@ -387,6 +446,68 @@
       </div>
     </div>
   </div>
+  }
+
+  <!-- Section Hashes & Scores Tab -->
+  @if (activeTab === 'sections') {
+  <div class="card" style="margin-bottom: 24px;">
+    <h2>Individual Section Hashes & Scores</h2>
+    <p class="muted">These scores and cryptographic hash values are calculated and saved in the database for each
+      section of your resume to optimize processing cost and performance.</p>
+
+    @if (!resume.sectionScores || resume.sectionScores.length === 0) {
+    <p style="margin-top: 16px;">No individual section scores are available for this resume in the database.</p>
+    } @else {
+    <div style="margin-top: 20px; display: flex; flex-direction: column; gap: 12px;">
+      @for (sec of resume.sectionScores; track sec.sectionName) {
+      <div class="editor-section" style="border: 1px solid var(--border); border-radius: 8px;">
+        <div class="editor-header" (click)="toggleDbSection(sec.sectionName)"
+          style="display: flex; justify-content: space-between; align-items: center; padding: 16px; background: var(--bg-hover); cursor: pointer;">
+          <div style="display: flex; align-items: center; gap: 12px;">
+            <span style="font-weight: 700; color: var(--secondary);">{{ sec.sectionName }}</span>
+            <span class="badge info" style="font-weight: 700;">{{ sec.score }}/100</span>
+          </div>
+          <span>{{ openDbSections[sec.sectionName] ? '▲' : '▼' }}</span>
+        </div>
+        <div class="editor-content" *ngIf="openDbSections[sec.sectionName]"
+          style="padding: 16px; border-top: 1px solid var(--border); display: flex; flex-direction: column; gap: 16px;">
+          @if ((sec.strengths && sec.strengths.length > 0) || (sec.improvements && sec.improvements.length > 0)) {
+            @if (sec.strengths && sec.strengths.length > 0) {
+              <div>
+                <strong style="display: block; font-size: 0.85rem; text-transform: uppercase; color: var(--success); margin-bottom: 6px;">Strengths</strong>
+                <ul style="margin: 0; padding-left: 18px; color: var(--text-main); font-size: 0.9rem; display: flex; flex-direction: column; gap: 4px;">
+                  @for (str of sec.strengths; track str) {
+                    <li>{{ str }}</li>
+                  }
+                </ul>
+              </div>
+            }
+            @if (sec.improvements && sec.improvements.length > 0) {
+              <div>
+                <strong style="display: block; font-size: 0.85rem; text-transform: uppercase; color: #ea580c; margin-bottom: 6px;">Improvements Needed</strong>
+                <ul style="margin: 0; padding-left: 18px; color: var(--text-main); font-size: 0.9rem; display: flex; flex-direction: column; gap: 4px;">
+                  @for (imp of sec.improvements; track imp) {
+                    <li>{{ imp }}</li>
+                  }
+                </ul>
+              </div>
+            }
+          } @else {
+            <div>
+              <strong
+                style="display: block; font-size: 0.85rem; text-transform: uppercase; color: var(--text-muted); margin-bottom: 4px;">Analysis
+                & Feedback</strong>
+              <p style="margin: 0; line-height: 1.6; color: var(--text-main); white-space: pre-line;">{{ sec.feedback }}
+              </p>
+            </div>
+          }
+        </div>
+      </div>
+      }
+    </div>
+    }
+  </div>
+  }
   }
   } @else {
   <div class="card">

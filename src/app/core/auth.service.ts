@@ -46,7 +46,11 @@ export class AuthService {
     });
   }
 
-  private clearLocalSession(): void {
+  refresh(): Observable<AuthResponse> {
+    return this.http.post<AuthResponse>(`${API_BASE_URL}/auth/refresh`, {}, { withCredentials: true });
+  }
+
+  clearLocalSession(): void {
     localStorage.removeItem(this.userKey);
     this.currentUser.set(null);
     this.router.navigate(['']);

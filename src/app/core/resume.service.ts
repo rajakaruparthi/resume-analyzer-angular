@@ -19,8 +19,8 @@ export class ResumeService {
     return forkJoin(uploads).pipe(
       map(results => ({
         uploaded: results.map(res => ({
-          id: res.s3Key,
-          key: res.key,
+          id: res.id || res.s3Key,
+          key: res.key || res.fileName,
           originalFilename: res.fileName,
           s3Key: res.s3Key,
           status: 'COMPLETED',

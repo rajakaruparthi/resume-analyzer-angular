@@ -13,14 +13,29 @@ export interface ResumeSummary {
 export interface ScoreBreakdown {
   category: string;
   score: number;
-  comments: string;
+  comments?: string;
+  strengths?: string[];
+  improvements?: string[];
 }
 
-export interface WorkExperience {
+export interface Experience {
   company: string;
   role: string;
+  location?: string;
   duration: string;
+  startDate?: string;
+  endDate?: string;
+  currentEmployer?: boolean;
   bullets: string[];
+}
+
+export interface Project {
+  name: string;
+  description: string;
+  technologies?: string[];
+  bullets?: string[];
+  githubUrl?: string;
+  projectUrl?: string;
 }
 
 export interface Education {
@@ -35,11 +50,27 @@ export interface ResumeThemeData {
   email: string;
   phone: string;
   website: string;
+  linkedin?: string;
+  github?: string;
   location: string;
   summary: string;
-  experience: WorkExperience[];
+  experience: Experience[];
+  projects?: Project[];
   education: Education[];
   skills: string[];
+  certifications?: string[];
+  awards?: string[];
+  publications?: string[];
+  languages?: string[];
+}
+
+export interface SectionScore {
+  sectionName: string;
+  sectionHash: string;
+  score: number;
+  feedback: string;
+  strengths?: string[];
+  improvements?: string[];
 }
 
 export interface ResumeDetail extends ResumeSummary {
@@ -49,6 +80,10 @@ export interface ResumeDetail extends ResumeSummary {
   improvements: string[];
   scoreBreakdown: ScoreBreakdown[];
   resumeData?: ResumeThemeData;
+  sectionScores?: SectionScore[];
+  isResume?: boolean;
+  missingSections?: string[];
+  weakSections?: string[];
 }
 
 export interface UploadResponse {

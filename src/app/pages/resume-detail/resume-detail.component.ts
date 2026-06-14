@@ -16,9 +16,10 @@ export class ResumeDetailComponent implements OnInit {
   loading = true;
 
   // Tabs and Themes State
-  activeTab: 'feedback' | 'themes' = 'feedback';
+  activeTab: 'feedback' | 'themes' | 'sections' = 'feedback';
   selectedTheme: 'modern' | 'creative' | 'classic' | 'executive' = 'modern';
   newSkillText = '';
+  openDbSections: { [key: string]: boolean } = {};
 
   // Accordion form state
   openSections: { [key: string]: boolean } = {
@@ -36,6 +37,8 @@ export class ResumeDetailComponent implements OnInit {
     email: 'alex.rivera@gmail.com',
     phone: '(555) 019-2834',
     website: 'github.com/alexrivera',
+    linkedin: '',
+    github: '',
     location: 'San Francisco, CA',
     summary: 'Senior Software Engineer with 6+ years of experience designing and implementing scalable web applications. Expert in Angular, TypeScript, Node.js, and cloud architectures.',
     experience: [
@@ -59,6 +62,7 @@ export class ResumeDetailComponent implements OnInit {
         ]
       }
     ],
+    projects: [],
     education: [
       {
         school: 'University of California, Berkeley',
@@ -66,7 +70,11 @@ export class ResumeDetailComponent implements OnInit {
         duration: '2016 - 2020'
       }
     ],
-    skills: ['Angular', 'TypeScript', 'JavaScript', 'HTML5/CSS3', 'Node.js', 'Spring Boot', 'PostgreSQL', 'Docker', 'AWS', 'Git']
+    skills: ['Angular', 'TypeScript', 'JavaScript', 'HTML5/CSS3', 'Node.js', 'Spring Boot', 'PostgreSQL', 'Docker', 'AWS', 'Git'],
+    certifications: [],
+    awards: [],
+    publications: [],
+    languages: []
   };
 
   constructor(private route: ActivatedRoute, private resumeService: ResumeService) { }
@@ -92,11 +100,18 @@ export class ResumeDetailComponent implements OnInit {
         email: data.resumeData.email || '',
         phone: data.resumeData.phone || '',
         website: data.resumeData.website || '',
+        linkedin: data.resumeData.linkedin || '',
+        github: data.resumeData.github || '',
         location: data.resumeData.location || '',
         summary: data.resumeData.summary || '',
         experience: data.resumeData.experience || [],
+        projects: data.resumeData.projects || [],
         education: data.resumeData.education || [],
-        skills: data.resumeData.skills || []
+        skills: data.resumeData.skills || [],
+        certifications: data.resumeData.certifications || [],
+        awards: data.resumeData.awards || [],
+        publications: data.resumeData.publications || [],
+        languages: data.resumeData.languages || []
       };
       return;
     }
@@ -186,6 +201,10 @@ export class ResumeDetailComponent implements OnInit {
   // Editor actions
   toggleSection(section: string): void {
     this.openSections[section] = !this.openSections[section];
+  }
+
+  toggleDbSection(sectionName: string): void {
+    this.openDbSections[sectionName] = !this.openDbSections[sectionName];
   }
 
   addExperience(): void {

@@ -22,7 +22,6 @@ export class DashboardComponent implements OnInit {
       next: data => {
         this.resumes = data;
         this.loading = false;
-        console.log(this.resumes);
       },
       error: () => { this.loading = false; }
     });
