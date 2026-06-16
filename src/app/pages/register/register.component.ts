@@ -1,6 +1,7 @@
 import { Component, inject } from '@angular/core';
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { Router, RouterLink } from '@angular/router';
+import { HttpErrorResponse } from '@angular/common/http';
 import { AuthService } from '../../core/auth.service';
 
 @Component({
@@ -29,7 +30,20 @@ export class RegisterComponent {
     this.error = '';
     this.auth.register(this.form.getRawValue()).subscribe({
       next: () => this.router.navigate(['/verify-email']),
-      error: () => { this.error = 'Registration failed'; this.loading = false; }
+      error: (err: HttpErrorResponse) => {
+        this.loading = false;
+        if (err.status === 0) {
+          this.error = 'Cannot connect to server. Please check your network connection.';
+        } else if (err.error?.error) {
+          this.error = err.error.error;
+        } else if (err.error?.message) {
+          this.error = err.error.message;
+        } else if (err.status === 409) {
+          this.error = 'An account with this email already exists.';
+        } else {
+          this.error = 'Registration failed. Please try again.';
+        }
+      }
     });
   }
 }

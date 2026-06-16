@@ -32,7 +32,7 @@ export const authInterceptor: HttpInterceptorFn = (req, next) => {
             catchError((refreshErr) => {
               isRefreshing = false;
               refreshTokenSubject.next(false);
-              authService.clearLocalSession();
+              authService.clearLocalSession('expired');
               return throwError(() => refreshErr);
             })
           );
