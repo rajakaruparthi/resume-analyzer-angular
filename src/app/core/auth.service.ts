@@ -41,8 +41,8 @@ export class AuthService {
 
   logout(): void {
     this.http.post(`${API_BASE_URL}/auth/logout`, {}).subscribe({
-      next: () => this.clearLocalSession(),
-      error: () => this.clearLocalSession()
+      next: () => this.clearLocalSession('logout'),
+      error: () => this.clearLocalSession('logout')
     });
   }
 
@@ -50,10 +50,16 @@ export class AuthService {
     return this.http.post<AuthResponse>(`${API_BASE_URL}/auth/refresh`, {}, { withCredentials: true });
   }
 
-  clearLocalSession(): void {
+  clearLocalSession(reason?: 'expired' | 'logout'): void {
     localStorage.removeItem(this.userKey);
     this.currentUser.set(null);
-    this.router.navigate(['']);
+    if (reason === 'expired') {
+      this.router.navigate(['/login'], { queryParams: { expired: 'true' } });
+    } else if (reason === 'logout') {
+      this.router.navigate(['/login'], { queryParams: { loggedOut: 'true' } });
+    } else {
+      this.router.navigate(['/login']);
+    }
   }
 
   isLoggedIn(): boolean {

@@ -1,6 +1,7 @@
 import { Component, OnInit, inject } from '@angular/core';
 import { ActivatedRoute, Router, RouterLink } from '@angular/router';
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
+import { HttpErrorResponse } from '@angular/common/http';
 import { AuthService } from '../../core/auth.service';
 
 @Component({
@@ -42,9 +43,13 @@ export class EmailVerificationComponent implements OnInit {
         this.loading = false;
         this.successMessage = res.message || 'Your email has been verified successfully!';
       },
-      error: (err) => {
+      error: (err: HttpErrorResponse) => {
         this.loading = false;
-        this.errorMessage = err.error?.error || 'Verification failed. The token may be invalid or expired.';
+        if (err.status === 0) {
+          this.errorMessage = 'Cannot connect to server. Please check your network connection.';
+        } else {
+          this.errorMessage = err.error?.error || err.error?.message || 'Verification failed. The token may be invalid or expired.';
+        }
       }
     });
   }
@@ -62,9 +67,13 @@ export class EmailVerificationComponent implements OnInit {
         this.resendSuccess = res.message || 'Verification email resent successfully!';
         this.resendForm.reset();
       },
-      error: (err) => {
+      error: (err: HttpErrorResponse) => {
         this.resending = false;
-        this.resendError = err.error?.error || 'Failed to resend verification email.';
+        if (err.status === 0) {
+          this.resendError = 'Cannot connect to server. Please check your network connection.';
+        } else {
+          this.resendError = err.error?.error || err.error?.message || 'Failed to resend verification email.';
+        }
       }
     });
   }
